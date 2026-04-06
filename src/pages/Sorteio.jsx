@@ -15,7 +15,7 @@ function corteIcon(corte) {
 }
 
 function CardTime({ time, numTime, cores }) {
-  const media     = (time.reduce((s, j) => s + j.nota, 0) / time.length).toFixed(2)
+  const media     = (time.reduce((s, j) => s + j.nota_final, 0) / time.length).toFixed(2)
   const somaCorte = time.reduce((s, j) => s + (j.corte || 0), 0).toFixed(1)
   const badgeBg   = cores.badge + '22'
 
@@ -43,7 +43,7 @@ function CardTime({ time, numTime, cores }) {
                 {(j.sexo === 'F' || j.sexo === 'f') ? '♀ ' : ''}{j.nome}
                 {j.convidado && <span style={{ color: '#555', fontSize: 9, marginLeft: 4 }}>c</span>}
               </td>
-              <td style={{ padding: '4px 6px', textAlign: 'center', color: '#fff', fontWeight: 700 }}>{j.nota}</td>
+              <td style={{ padding: '4px 6px', textAlign: 'center', color: '#fff', fontWeight: 700 }}>{j.nota_final}</td>
               <td style={{ padding: '4px 6px', textAlign: 'center' }}>{corteIcon(j.corte)}</td>
             </tr>
           ))}
