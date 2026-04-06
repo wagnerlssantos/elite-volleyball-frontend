@@ -36,7 +36,7 @@ export default function Jogadores({ data, setData }) {
   }
 
   async function salvarJogador() {
-    if (!form.nome || !form.nota) return alert('Nome e nota são obrigatórios.')
+    if (!form.nome || !form.nota_final) return alert('Nome e nota são obrigatórios.')
     if (editando) {
       await atualizarJogador(editando, form)
     } else {
@@ -55,7 +55,7 @@ export default function Jogadores({ data, setData }) {
   }
 
   function iniciarEdicao(j) {
-    setForm({ nome: j.nome, sexo: j.sexo, nota: j.nota, corte: j.corte, convidado: j.convidado })
+    setForm({ nome: j.nome, sexo: j.sexo, nota_fina: j.nota_final, corte: j.corte, convidado: j.convidado })
     setEditando(j.id)
     setMostrarForm(true)
   }
@@ -76,7 +76,7 @@ export default function Jogadores({ data, setData }) {
     lista.sort((a, b) => {
       let va, vb
       if (ordenar === 'nome')     { va = a.nome.toLowerCase(); vb = b.nome.toLowerCase() }
-      if (ordenar === 'nota')     { va = a.nota; vb = b.nota }
+      if (ordenar === 'nota') { va = a.nota_final; vb = b.nota_final }
       if (ordenar === 'corte')    { va = a.corte; vb = b.corte }
       if (ordenar === 'presenca') { va = presencas[a.id] ? 1 : 0; vb = presencas[b.id] ? 1 : 0 }
       if (va < vb) return direcao === 'asc' ? -1 : 1
@@ -236,7 +236,7 @@ export default function Jogadores({ data, setData }) {
               {j.nome} {j.convidado && <span style={{ color: '#555', fontSize: 11 }}>convidado</span>}
             </span>
             <span style={{ color: '#fff', fontWeight: 700, width: 50, textAlign: 'center', fontSize: 13 }}>
-              {Number(j.nota).toFixed(2)}
+              {Number(j.nota_final).toFixed(2)}
             </span>
             <span style={{ width: 40, textAlign: 'center', fontSize: 9 }}>
               {j.corte >= 1
