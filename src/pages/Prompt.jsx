@@ -24,7 +24,6 @@ function gerarListaTimes(times) {
 function gerarPromptCompleto(data, times) {
   const dataExtenso = formatarDataExtenso(data)
   const listaTimes  = gerarListaTimes(times)
-
   return `Poster esportivo profissional de escalação de time de vôlei, formato vertical 4:5 (estilo Instagram), resolução 4K, qualidade ultra detalhada.
 
 Cenário:
@@ -100,6 +99,17 @@ Data: ${dataExtenso}
 ${listaTimes}`
 }
 
+const boxStyle = {
+  background: '#161616', border: '1px solid #252525',
+  borderRadius: 8, padding: '14px 16px', width: '100%', boxSizing: 'border-box'
+}
+
+const preStyle = {
+  color: '#888', fontSize: 12, margin: 0,
+  whiteSpace: 'pre-wrap', fontFamily: 'monospace',
+  lineHeight: 1.7, wordBreak: 'break-word'
+}
+
 export default function Prompt({ data, opcoes }) {
   const [opcaoSelecionada, setOpcaoSelecionada] = useState(null)
   const [textoEditavel, setTextoEditavel]       = useState('')
@@ -122,26 +132,26 @@ export default function Prompt({ data, opcoes }) {
 
   if (!opcoes) {
     return (
-      <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center', paddingTop: 60 }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center', paddingTop: 60 }}>
         <div style={{ fontSize: 40, marginBottom: 16 }}>📸</div>
-        <p style={{ color: '#555', fontSize: 15 }}>Primeiro faça o sorteio na aba <strong style={{ color: '#ccc' }}>Sortear Times</strong> para gerar o prompt do Instagram.</p>
+        <p style={{ color: '#555', fontSize: 15 }}>Primeiro faça o sorteio na aba <strong style={{ color: '#ccc' }}>Sortear Times</strong>.</p>
       </div>
     )
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div style={{ maxWidth: 700, margin: '0 auto' }}>
       <h2 style={{ color: '#fff', marginBottom: 6, fontSize: 18 }}>📸 Prompt para Instagram</h2>
-      <p style={{ color: '#555', fontSize: 13, marginBottom: 20 }}>Selecione a opção de times escolhida pelo grupo para gerar o prompt do ChatGPT.</p>
+      <p style={{ color: '#555', fontSize: 13, marginBottom: 16 }}>Selecione a opção escolhida pelo grupo.</p>
 
-      {/* Seleção de opção */}
-      <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
-        {opcoes.map((times, i) => (
+      {/* Seleção */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+        {opcoes.map((_, i) => (
           <button key={i} onClick={() => setOpcaoSelecionada(i)} style={{
             background: opcaoSelecionada === i ? '#e94560' : '#161616',
             color: opcaoSelecionada === i ? '#fff' : '#aaa',
             border: `1px solid ${opcaoSelecionada === i ? '#e94560' : '#252525'}`,
-            borderRadius: 8, padding: '8px 20px', cursor: 'pointer', fontWeight: 700, fontSize: 13
+            borderRadius: 8, padding: '7px 18px', cursor: 'pointer', fontWeight: 700, fontSize: 13
           }}>
             Opção {i + 1}
           </button>
@@ -151,11 +161,9 @@ export default function Prompt({ data, opcoes }) {
       {opcaoSelecionada !== null && (
         <>
           {/* Texto editável */}
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <label style={{ color: '#aaa', fontSize: 12, fontWeight: 700, letterSpacing: 2 }}>
-                TEXTO PARA O CHATGPT — EDITÁVEL
-              </label>
+              <label style={{ color: '#aaa', fontSize: 11, fontWeight: 700, letterSpacing: 2 }}>TEXTO EDITÁVEL</label>
               <button onClick={copiar} style={{
                 background: copiado ? '#1b4332' : '#252525',
                 color: copiado ? '#52b788' : '#ccc',
@@ -168,26 +176,23 @@ export default function Prompt({ data, opcoes }) {
             <textarea
               value={textoEditavel}
               onChange={e => setTextoEditavel(e.target.value)}
-              rows={12}
+              rows={10}
               style={{
-                width: '100%', background: '#161616', border: '1px solid #333',
-                color: '#ccc', borderRadius: 8, padding: '12px 14px',
-                fontSize: 13, fontFamily: 'monospace', resize: 'vertical',
-                lineHeight: 1.6
+                ...boxStyle, color: '#ccc', fontSize: 12,
+                fontFamily: 'monospace', resize: 'vertical',
+                lineHeight: 1.6, border: '1px solid #333',
+                wordBreak: 'break-word'
               }}
             />
           </div>
 
           {/* Prompt base */}
           <div>
-            <div style={{ color: '#aaa', fontSize: 12, fontWeight: 700, letterSpacing: 2, marginBottom: 8 }}>
-              🎯 PROMPT BASE (padrão oficial — para primeira geração)
+            <div style={{ color: '#aaa', fontSize: 11, fontWeight: 700, letterSpacing: 2, marginBottom: 8 }}>
+              🎯 PROMPT BASE
             </div>
-            <div style={{ background: '#161616', border: '1px solid #252525', borderRadius: 8, padding: '14px 16px' }}>
-              <pre style={{
-                color: '#888', fontSize: 12, margin: 0,
-                whiteSpace: 'pre-wrap', fontFamily: 'monospace', lineHeight: 1.7
-              }}>
+            <div style={boxStyle}>
+              <pre style={preStyle}>
                 {gerarPromptCompleto(data, opcoes[opcaoSelecionada])}
               </pre>
             </div>
