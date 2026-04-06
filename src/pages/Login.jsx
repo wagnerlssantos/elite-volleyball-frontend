@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { supabase } from '../supabase'
 
 export default function Login({ onLogin }) {
-  const [email, setEmail]       = useState('')
-  const [senha, setSenha]       = useState('')
-  const [erro, setErro]         = useState(null)
-  const [loading, setLoading]   = useState(false)
+  const [email, setEmail]     = useState('')
+  const [senha, setSenha]     = useState('')
+  const [erro, setErro]       = useState(null)
+  const [loading, setLoading] = useState(false)
 
   async function entrar() {
     setLoading(true)
@@ -34,36 +34,33 @@ export default function Login({ onLogin }) {
       }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>🏐</div>
-          <h1 style={{ color: '#fff', fontSize: 20, margin: 0 }}>Elite Volleyball</h1>
-          <p style={{ color: '#555', fontSize: 13, marginTop: 6 }}>Acesso restrito aos administradores</p>
+          <h1 style={{ color: '#fff', fontSize: 22, margin: 0 }}>Elite Volleyball Team</h1>
+          <p style={{ color: '#aaa', fontSize: 14, marginTop: 8 }}>Bem-vindo à página de administração do time</p>
+          <p style={{ color: '#555', fontSize: 12, marginTop: 4 }}>Acesso restrito aos administradores</p>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div>
             <label style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>E-MAIL</label>
-            <input
-              type="email" value={email}
+            <input type="email" value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={handleKeyDown}
               style={{
                 width: '100%', background: '#1e1e1e', border: '1px solid #333',
                 color: '#fff', borderRadius: 6, padding: '10px 12px',
                 marginTop: 4, fontSize: 14, boxSizing: 'border-box'
-              }}
-            />
+              }} />
           </div>
           <div>
             <label style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>SENHA</label>
-            <input
-              type="password" value={senha}
+            <input type="password" value={senha}
               onChange={e => setSenha(e.target.value)}
               onKeyDown={handleKeyDown}
               style={{
                 width: '100%', background: '#1e1e1e', border: '1px solid #333',
                 color: '#fff', borderRadius: 6, padding: '10px 12px',
                 marginTop: 4, fontSize: 14, boxSizing: 'border-box'
-              }}
-            />
+              }} />
           </div>
 
           {erro && (

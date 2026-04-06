@@ -4,14 +4,14 @@ import { listarJogadores, criarJogador, atualizarJogador, removerJogador, listar
 const jogadorVazio = { nome: '', sexo: 'M', nota: '', corte: 0, convidado: false }
 
 export default function Jogadores({ data, setData }) {
-  const [jogadores, setJogadores]     = useState([])
-  const [presencas, setPresencas]     = useState({})
-  const [form, setForm]               = useState(jogadorVazio)
-  const [editando, setEditando]       = useState(null)
-  const [mostrarForm, setMostrarForm] = useState(false)
-  const [ordenar, setOrdenar]         = useState('nome')
-  const [direcao, setDirecao]         = useState('asc')
-  const [filtroPresenca, setFiltroPresenca] = useState('todos') // 'todos' | 'presentes' | 'ausentes'
+  const [jogadores, setJogadores]           = useState([])
+  const [presencas, setPresencas]           = useState({})
+  const [form, setForm]                     = useState(jogadorVazio)
+  const [editando, setEditando]             = useState(null)
+  const [mostrarForm, setMostrarForm]       = useState(false)
+  const [ordenar, setOrdenar]               = useState('nome')
+  const [direcao, setDirecao]               = useState('asc')
+  const [filtroPresenca, setFiltroPresenca] = useState('todos')
 
   useEffect(() => { carregarJogadores() }, [])
   useEffect(() => { carregarPresencas() }, [data])
@@ -71,12 +71,8 @@ export default function Jogadores({ data, setData }) {
 
   const jogadoresFiltrados = useMemo(() => {
     let lista = [...jogadores]
-
-    // Filtro de presença
     if (filtroPresenca === 'presentes') lista = lista.filter(j => presencas[j.id])
     if (filtroPresenca === 'ausentes')  lista = lista.filter(j => !presencas[j.id])
-
-    // Ordenação
     lista.sort((a, b) => {
       let va, vb
       if (ordenar === 'nome')     { va = a.nome.toLowerCase(); vb = b.nome.toLowerCase() }
@@ -87,7 +83,6 @@ export default function Jogadores({ data, setData }) {
       if (va > vb) return direcao === 'asc' ? 1 : -1
       return 0
     })
-
     return lista
   }, [jogadores, presencas, ordenar, direcao, filtroPresenca])
 
@@ -135,14 +130,13 @@ export default function Jogadores({ data, setData }) {
         </div>
       </div>
 
-      {/* Filtros e ordenação */}
+      {/* Filtros */}
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
         <span style={{ color: '#555', fontSize: 12 }}>Ordenar:</span>
         <BotaoOrdem campo="nome"     label="Nome" />
         <BotaoOrdem campo="nota"     label="Nota" />
         <BotaoOrdem campo="corte"    label="Corte" />
         <BotaoOrdem campo="presenca" label="Presença" />
-
         <div style={{ marginLeft: 8, display: 'flex', gap: 4 }}>
           {['todos', 'presentes', 'ausentes'].map(f => (
             <button key={f} onClick={() => setFiltroPresenca(f)} style={{
@@ -204,12 +198,28 @@ export default function Jogadores({ data, setData }) {
         </div>
       )}
 
+      {/* Cabeçalho da tabela */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '44px 1fr 50px 40px 60px 70px',
+        padding: '6px 16px',
+        marginBottom: 4,
+        gap: 12
+      }}>
+        <span style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>PRES.</span>
+        <span style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>NOME</span>
+        <span style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1, textAlign: 'center' }}>NOTA</span>
+        <span style={{ color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1, textAlign: 'center' }}>CORTE</span>
+        <span></span>
+        <span></span>
+      </div>
+
       {/* Lista */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {jogadoresFiltrados.map(j => (
           <div key={j.id} style={{
             background: '#161616', border: '1px solid #252525', borderRadius: 8,
-            padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12
+            padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12
           }}>
             <div onClick={() => togglePresenca(j.id)} style={{
               width: 36, height: 20, borderRadius: 10, cursor: 'pointer',
@@ -225,10 +235,10 @@ export default function Jogadores({ data, setData }) {
             <span style={{ flex: 1, color: j.sexo === 'F' ? '#f8a4c8' : '#ccc', fontWeight: 500 }}>
               {j.nome} {j.convidado && <span style={{ color: '#555', fontSize: 11 }}>convidado</span>}
             </span>
-            <span style={{ color: '#fff', fontWeight: 700, width: 40, textAlign: 'center' }}>
+            <span style={{ color: '#fff', fontWeight: 700, width: 50, textAlign: 'center', fontSize: 13 }}>
               {Number(j.nota).toFixed(2)}
             </span>
-            <span style={{ width: 32, textAlign: 'center', fontSize: 9 }}>
+            <span style={{ width: 40, textAlign: 'center', fontSize: 9 }}>
               {j.corte >= 1
                 ? <span style={{ color: '#e94560' }}>●●●</span>
                 : j.corte >= 0.5

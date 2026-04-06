@@ -20,7 +20,7 @@ function CardTime({ time, numTime, cores }) {
   const badgeBg   = cores.badge + '22'
 
   return (
-    <div style={{ background: '#161616', border: '1px solid #252525', borderRadius: 6, overflow: 'hidden', flex: 1 }}>
+    <div style={{ background: '#161616', border: '1px solid #252525', borderRadius: 6, overflow: 'hidden', flex: 1, minWidth: 180 }}>
       <div style={{ background: cores.header, padding: '6px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ color: '#fff', fontWeight: 700, fontSize: 12 }}>Time {numTime}</span>
         <div style={{ display: 'flex', gap: 4 }}>
@@ -31,17 +31,17 @@ function CardTime({ time, numTime, cores }) {
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
         <thead>
           <tr style={{ background: '#1a1a1a' }}>
-            <th style={{ color: '#444', fontSize: 9, padding: '4px 8px', textAlign: 'center', fontWeight: 600, letterSpacing: 1 }}>JOGADOR</th>
+            <th style={{ color: '#444', fontSize: 9, padding: '4px 8px', textAlign: 'left', fontWeight: 600, letterSpacing: 1 }}>JOGADOR</th>
             <th style={{ color: '#444', fontSize: 9, padding: '4px 6px', textAlign: 'center', fontWeight: 600 }}>NOTA</th>
-            <th style={{ color: '#444', fontSize: 9, padding: '4px 6px', textAlign: 'center', fontWeight: 600 }}>CORTE</th>
+            <th style={{ color: '#444', fontSize: 9, padding: '4px 6px', textAlign: 'center', fontWeight: 600 }}>✂</th>
           </tr>
         </thead>
         <tbody>
           {time.map((j, i) => (
             <tr key={i} style={{ borderTop: '1px solid #1e1e1e' }}>
-              <td style={{ padding: '4px 8px', color: j.sexo === 'F' || j.sexo === 'f' ? '#f8a4c8' : '#ccc', fontWeight: 500 }}>
+              <td style={{ padding: '4px 8px', color: j.sexo === 'F' || j.sexo === 'f' ? '#f8a4c8' : '#ccc', fontWeight: 500, whiteSpace: 'nowrap' }}>
                 {(j.sexo === 'F' || j.sexo === 'f') ? '♀ ' : ''}{j.nome}
-                {j.convidado && <span style={{ color: '#555', fontSize: 9, marginLeft: 4 }}>conv</span>}
+                {j.convidado && <span style={{ color: '#555', fontSize: 9, marginLeft: 4 }}>c</span>}
               </td>
               <td style={{ padding: '4px 6px', textAlign: 'center', color: '#fff', fontWeight: 700 }}>{j.nota}</td>
               <td style={{ padding: '4px 6px', textAlign: 'center' }}>{corteIcon(j.corte)}</td>
@@ -85,35 +85,37 @@ function TextoWhatsapp({ opcoes, data }) {
   return (
     <div style={{ marginTop: 20 }}>
       <h3 style={{ color: '#fff', marginBottom: 12, fontSize: 13 }}>📱 Versão WhatsApp</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
-        {opcoes.map((times, i) => (
-          <div key={i} style={{ background: '#161616', border: '1px solid #252525', borderRadius: 8, padding: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-              <span style={{ color: '#aaa', fontWeight: 700, letterSpacing: 2, fontSize: 11 }}>OPÇÃO {i + 1}</span>
-              <button onClick={() => copiar(times, i + 1)} style={{
-                background: copiado === i + 1 ? '#1b4332' : '#252525',
-                color: copiado === i + 1 ? '#52b788' : '#ccc',
-                border: 'none', borderRadius: 6, padding: '3px 8px',
-                cursor: 'pointer', fontWeight: 600, fontSize: 11
-              }}>
-                {copiado === i + 1 ? '✓ Copiado!' : 'Copiar'}
-              </button>
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ display: 'flex', gap: 10, minWidth: 600 }}>
+          {opcoes.map((times, i) => (
+            <div key={i} style={{ background: '#161616', border: '1px solid #252525', borderRadius: 8, padding: 10, flex: 1, minWidth: 180 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <span style={{ color: '#aaa', fontWeight: 700, letterSpacing: 2, fontSize: 11 }}>OPÇÃO {i + 1}</span>
+                <button onClick={() => copiar(times, i + 1)} style={{
+                  background: copiado === i + 1 ? '#1b4332' : '#252525',
+                  color: copiado === i + 1 ? '#52b788' : '#ccc',
+                  border: 'none', borderRadius: 6, padding: '3px 8px',
+                  cursor: 'pointer', fontWeight: 600, fontSize: 11
+                }}>
+                  {copiado === i + 1 ? '✓ Copiado!' : 'Copiar'}
+                </button>
+              </div>
+              <pre style={{ color: '#ccc', fontSize: 11, margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+                {gerarTexto(times, i + 1)}
+              </pre>
             </div>
-            <pre style={{ color: '#ccc', fontSize: 11, margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
-              {gerarTexto(times, i + 1)}
-            </pre>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
 export default function Sorteio({ data, setData, opcoes, setOpcoes }) {
-  const [loading, setLoading]           = useState(false)
-  const [erro, setErro]                 = useState(null)
-  const [baixando, setBaixando]         = useState(false)
-  const comparadorRef                   = useRef(null)
+  const [loading, setLoading]   = useState(false)
+  const [erro, setErro]         = useState(null)
+  const [baixando, setBaixando] = useState(false)
+  const comparadorRef           = useRef(null)
 
   async function rodarSorteio() {
     setLoading(true)
@@ -134,9 +136,7 @@ export default function Sorteio({ data, setData, opcoes, setOpcoes }) {
     setBaixando(true)
     try {
       const canvas = await html2canvas(comparadorRef.current, {
-        backgroundColor: '#0d0d0d',
-        scale: 2, // dobra a resolução para ficar nítido
-        useCORS: true,
+        backgroundColor: '#0d0d0d', scale: 2, useCORS: true,
       })
       const link    = document.createElement('a')
       link.download = `times_${data}.png`
@@ -148,34 +148,31 @@ export default function Sorteio({ data, setData, opcoes, setOpcoes }) {
   }
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-
-      {/* Cabeçalho */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <h2 style={{ color: '#fff', margin: 0, fontSize: 18 }}>Sortear Times</h2>
-        <input type="date" value={data} onChange={e => setData(e.target.value)}
-          style={{ background: '#1e1e1e', border: '1px solid #333', color: '#ccc', borderRadius: 6, padding: '5px 10px', fontSize: 13 }} />
-        <button onClick={rodarSorteio} disabled={loading} style={{
-          background: '#e94560', color: '#fff', border: 'none', borderRadius: 6,
-          padding: '7px 20px', cursor: loading ? 'not-allowed' : 'pointer',
-          fontWeight: 700, fontSize: 14, opacity: loading ? 0.7 : 1
-        }}>
-          {loading ? 'Sorteando...' : '🎲 Sortear'}
-        </button>
-
-        {/* Botão de download — só aparece quando há resultado */}
-        {opcoes && (
-          <button onClick={baixarImagem} disabled={baixando} style={{
-            background: '#252525', color: baixando ? '#555' : '#ccc',
-            border: '1px solid #333', borderRadius: 6,
-            padding: '7px 16px', cursor: baixando ? 'not-allowed' : 'pointer',
-            fontWeight: 600, fontSize: 13
+    <div>
+      {/* Cabeçalho — scroll horizontal no mobile */}
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, minWidth: 480 }}>
+          <h2 style={{ color: '#fff', margin: 0, fontSize: 18, whiteSpace: 'nowrap' }}>Sortear Times</h2>
+          <input type="date" value={data} onChange={e => setData(e.target.value)}
+            style={{ background: '#1e1e1e', border: '1px solid #333', color: '#ccc', borderRadius: 6, padding: '5px 10px', fontSize: 13 }} />
+          <button onClick={rodarSorteio} disabled={loading} style={{
+            background: '#e94560', color: '#fff', border: 'none', borderRadius: 6,
+            padding: '7px 20px', cursor: loading ? 'not-allowed' : 'pointer',
+            fontWeight: 700, fontSize: 14, opacity: loading ? 0.7 : 1, whiteSpace: 'nowrap'
           }}>
-            {baixando ? 'Gerando...' : '⬇ Baixar imagem'}
+            {loading ? 'Sorteando...' : '🎲 Sortear'}
           </button>
-        )}
-
-        {opcoes && <span style={{ color: '#555', fontSize: 12 }}>Clique em Sortear para gerar novas opções</span>}
+          {opcoes && (
+            <button onClick={baixarImagem} disabled={baixando} style={{
+              background: '#252525', color: baixando ? '#555' : '#ccc',
+              border: '1px solid #333', borderRadius: 6,
+              padding: '7px 16px', cursor: baixando ? 'not-allowed' : 'pointer',
+              fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap'
+            }}>
+              {baixando ? 'Gerando...' : '⬇ Baixar imagem'}
+            </button>
+          )}
+        </div>
       </div>
 
       {erro && (
@@ -186,21 +183,23 @@ export default function Sorteio({ data, setData, opcoes, setOpcoes }) {
 
       {opcoes && (
         <>
-          {/* Área capturada pelo html2canvas */}
-          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', marginLeft: -24, marginRight: -24, paddingLeft: 24, paddingRight: 24 }}>
-            <div style={{ minWidth: 700 }}>
-              {opcoes.map((times, i) => (
-                <div key={i}>
-                  <div style={{ color: '#555', fontWeight: 700, letterSpacing: 3, fontSize: 15, textAlign: 'center', marginBottom: 6 }}>
-                    OPÇÃO {i + 1}
+          {/* Comparador com scroll horizontal */}
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <div ref={comparadorRef} style={{ background: '#0d0d0d', padding: 8, minWidth: 600 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {opcoes.map((times, i) => (
+                  <div key={i}>
+                    <div style={{ color: '#555', fontWeight: 700, letterSpacing: 3, fontSize: 11, textAlign: 'center', marginBottom: 6 }}>
+                      OPÇÃO {i + 1}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      {times.map((time, j) => (
+                        <CardTime key={j} time={time} numTime={j + 1} cores={CORES[j % CORES.length]} />
+                      ))}
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    {times.map((time, j) => (
-                      <CardTime key={j} time={time} numTime={j + 1} cores={CORES[j % CORES.length]} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
