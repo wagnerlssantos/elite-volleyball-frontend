@@ -36,7 +36,7 @@ export default function Jogadores({ data, setData }) {
   }
 
   async function salvarJogador() {
-    if (!form.nome || !form.nota_final) return alert('Nome e nota são obrigatórios.')
+    if (!form.nome || !form.nota) return alert('Nome e nota são obrigatórios.')
     if (editando) {
       await atualizarJogador(editando, form)
     } else {
@@ -55,7 +55,7 @@ export default function Jogadores({ data, setData }) {
   }
 
   function iniciarEdicao(j) {
-    setForm({ nome: j.nome, sexo: j.sexo, nota_fina: j.nota_final, corte: j.corte, convidado: j.convidado })
+    setForm({ nome: j.nome, sexo: j.sexo, nota: j.nota_final, corte: j.corte, convidado: j.convidado })
     setEditando(j.id)
     setMostrarForm(true)
   }
