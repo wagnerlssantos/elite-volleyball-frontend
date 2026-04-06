@@ -187,8 +187,8 @@ export default function Sorteio({ data, setData, opcoes, setOpcoes }) {
       {opcoes && (
         <>
           {/* Área capturada pelo html2canvas */}
-          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 600 }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', marginLeft: -24, marginRight: -24, paddingLeft: 24, paddingRight: 24 }}>
+            <div style={{ minWidth: 700 }}>
               {opcoes.map((times, i) => (
                 <div key={i}>
                   <div style={{ color: '#555', fontWeight: 700, letterSpacing: 3, fontSize: 15, textAlign: 'center', marginBottom: 6 }}>
