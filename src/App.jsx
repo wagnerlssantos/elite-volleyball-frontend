@@ -63,7 +63,7 @@ export default function App() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
           {navBtn('jogadores', 'Jogadores')}
           {navBtn('sorteio', 'Sortear Times')}
-          {navBtn('prompt', '📸 Prompt Instagram')}
+          {navBtn('prompt', 'Prompt Instagram')}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 8 }}>
             <span style={{ color: '#444', fontSize: 11, maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {usuario.email}
