@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Jogadores from './pages/Jogadores'
 import Sorteio from './pages/Sorteio'
 import Prompt from './pages/Prompt'
+import Pesos from './pages/Pesos'
 
 const hoje = new Date().toISOString().split('T')[0]
 
@@ -36,7 +37,7 @@ export default function App() {
     <button onClick={() => setTela(id)} style={{
       background: tela === id ? '#e94560' : 'transparent',
       color: '#fff', border: 'none', borderRadius: 6,
-      padding: '6px 16px', cursor: 'pointer', fontWeight: 600, fontSize: 14
+      padding: '6px 14px', cursor: 'pointer', fontWeight: 600, fontSize: 13
     }}>{label}</button>
   )
 
@@ -50,22 +51,19 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0d0d0d', color: '#ccc', fontFamily: 'sans-serif' }}>
-      <nav style={{ background: '#161616', borderBottom: '1px solid #252525', padding: '12px 16px' }}>
-
-        {/* Linha 1: título centralizado */}
+      <nav style={{ background: '#161616', borderBottom: '1px solid #252525', padding: '10px 16px' }}>
         <div style={{ textAlign: 'center', marginBottom: 8 }}>
           <span style={{ fontWeight: 700, color: '#fff', fontSize: 15 }}>
             🏐 Elite Volleyball Team - Sorteador de times 🏐
           </span>
         </div>
-
-        {/* Linha 2: nav + sair numa linha só, sem position absolute */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, flexWrap: 'wrap' }}>
           {navBtn('jogadores', 'Jogadores')}
           {navBtn('sorteio', 'Sortear Times')}
           {navBtn('prompt', 'Prompt Instagram')}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 8 }}>
-            <span style={{ color: '#444', fontSize: 11, maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {navBtn('pesos', '⚖️ Pesos')}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 8 }}>
+            <span style={{ color: '#444', fontSize: 11, maxWidth: 110, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {usuario.email}
             </span>
             <button onClick={sair} style={{
@@ -80,6 +78,7 @@ export default function App() {
         {tela === 'jogadores' && <Jogadores data={data} setData={setData} />}
         {tela === 'sorteio'   && <Sorteio data={data} setData={setData} opcoes={opcoes} setOpcoes={setOpcoes} />}
         {tela === 'prompt'    && <Prompt data={data} opcoes={opcoes} />}
+        {tela === 'pesos'     && <Pesos />}
       </main>
     </div>
   )
